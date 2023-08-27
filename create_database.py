@@ -3,8 +3,8 @@ import chromadb
 import csv
 import argparse
 
-from custom_embedding import CustomEmbeddingModel
-from model import CustomBERTModel, Tokenize
+from utils.custom_embedding import CustomEmbeddingModel
+from utils.model import CustomBERTModel, Tokenize
 
 # define parser
 parser = argparse.ArgumentParser()

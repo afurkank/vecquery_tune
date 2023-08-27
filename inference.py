@@ -2,7 +2,7 @@ import torch
 import chromadb
 import argparse
 
-from model import CustomBERTModel, Tokenize
+from utils.model import CustomBERTModel, Tokenize
 
 # define parser
 parser = argparse.ArgumentParser()

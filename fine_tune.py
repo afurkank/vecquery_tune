@@ -5,8 +5,8 @@ from argparse import ArgumentParser
 from torch.optim import Adam
 from torch.utils.data import DataLoader, Dataset
 # import custom modules
-from loss_funcs import CosineDistanceLoss
-from model import CustomBERTModel, Tokenize
+from utils.loss_funcs import CosineDistanceLoss
+from utils.model import CustomBERTModel, Tokenize
 
 # define parser
 parser = ArgumentParser()
