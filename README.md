@@ -11,6 +11,21 @@ weights of the linear layers. By doing this, it preserves the original knowledge
 thus only improving the search results without causing 'forgetting'.
 
 
+# Usage
+
+First of all, do `pip install -r requirements.txt`
+
+The usage order is like this: 'fine_tune.py' -> 'create_database.py' -> 'inference.py'
+
+First, run the 'run_finetune.sh' script to obtain trained model weights.
+Then, run the 'run_create_database.sh' script to create a database that will utilize the fine-tuned model.
+Finally, run the 'run_inference.sh' to query any sentence you want and see the improved results. You can write 'exit' to break out of the program.
+
+Note: Don't forget to supply the 'run_create_database.sh' and 'run_inference.sh' scripts with the 'documents_column' and 'metadata_columns' parameters.
+
+Note: If you can't use the 'bash _.sh' command, you can also use the 'torchrun script.py --model_name ...' command in the same directory as the scripts. Don't forget
+to change the 'script' with the name of the script you want to run.
+
 
 # Requirements for Fine-Tuning
 
@@ -32,7 +47,6 @@ Other parameters can be found in the 'run_finetune.sh' file, but they are not re
 
 Note: Please make sure the pre-trained BERT model of your choice was trained on a corpus of the language you intend to query
 for.
-
 
 
 # Requirements for Creating Database
@@ -78,20 +92,7 @@ running inference, so if you specify a collection name, remember to supply it to
 
 
 
-# Usage
 
-First of all, do `pip install -r requirements.txt`
-
-The usage order is like this: 'fine_tune.py' -> 'create_database.py' -> 'inference.py'
-
-First, run the 'run_finetune.sh' script to obtain trained model weights.
-Then, run the 'run_create_database.sh' script to create a database that will utilize the fine-tuned model.
-Finally, run the 'run_inference.sh' to query any sentence you want and see the improved results. You can write 'exit' to break out of the program.
-
-Note: Don't forget to supply the 'run_create_database.sh' and 'run_inference.sh' scripts with the 'documents_column' and 'metadata_columns' parameters.
-
-Note: If you can't use the 'bash _.sh' command, you can also use the 'torchrun script.py --model_name ...' command in the same directory as the scripts. Don't forget
-to change the 'script' with the name of the script you want to run.
 
 
 
