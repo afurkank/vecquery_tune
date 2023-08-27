@@ -80,6 +80,8 @@ running inference, so if you specify a collection name, remember to supply it to
 
 # Usage
 
+First of all, do `pip install -r requirements.txt`
+
 The usage order is like this: 'fine_tune.py' -> 'create_database.py' -> 'inference.py'
 
 First, run the 'run_finetune.sh' script to obtain trained model weights.
