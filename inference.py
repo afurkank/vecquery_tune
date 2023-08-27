@@ -8,14 +8,14 @@ from model import CustomBERTModel, Tokenize
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_name', type=str, default='dbmdz/bert-base-turkish-cased', required=True,
                     help='The name of the model to use')
-parser.add_argument('--model_weights_path', type=str, required=True,
+parser.add_argument('--model_weights_path', type=str, default='./', required=True,
                     help='The path to the model weights file')
-parser.add_argument('--collection_name', type=str, required=True,
-                    help='The name of the collection')
 parser.add_argument('--documents_column', type=str, required=True,
                     help='The name of the column in the CSV file that contains the documents')
 parser.add_argument('--metadata_columns', type=str, required=True,
                     help='The metadata columns you want to return')
+parser.add_argument('--collection_name', type=str, default='collection', required=False,
+                    help='The name of the collection')
 parser.add_argument('--num_results', type=int, default=3, required=False,
                     help='The number of results to return')
 parser.add_argument('--max_len', type=int, default=256, required=False,
@@ -25,9 +25,9 @@ args = parser.parse_args()
 # define constants
 MODEL_NAME = args.model_name
 MODEL_WEIGHTS_PATH = args.model_weights_path
-COLLECTION_NAME = args.collection_name
 DOCUMENTS_COLUMN = args.documents_column
 METADATA_COLUMNS = args.metadata_columns
+COLLECTION_NAME = args.collection_name
 NUM_RESULTS = args.num_results
 MAX_LEN = args.max_len
 

@@ -14,24 +14,24 @@ parser.add_argument('--model_weights_path', type=str, required=True,
                     help='The path to the model weights file')
 parser.add_argument('--data_path', type=str, required=True,
                     help='The path to the CSV file containing the data')
-parser.add_argument('--max_len', type=int, default=256, required=False,
-                    help='The maximum length of the input sequence')
 parser.add_argument('--documents_column', type=str, required=True,
                     help='The name of the column in the CSV file that contains the documents')
 parser.add_argument('--metadata_columns', type=str, required=True,
                     help='The names of the columns in the CSV file that contain the metadata')
 parser.add_argument('collection_name', type=str, default='collection', required=False,
                     help='The name of the collection to create')
+parser.add_argument('--max_len', type=int, default=256, required=False,
+                    help='The maximum length of the input sequence')
 args = parser.parse_args()
 
 # define constants
 MODEL_NAME = args.model_name
 MODEL_WEIGHTS_PATH = args.model_weights_path
 DATA_PATH = args.data_path
-MAX_LEN = args.max_len
 DOCUMENTS_COLUMN = args.documents_column
 METADATA_COLUMNS = args.metadata_columns
 COLLECTION_NAME = args.collection_name
+MAX_LEN = args.max_len
 
 # define model
 model = CustomBERTModel(MODEL_NAME)
