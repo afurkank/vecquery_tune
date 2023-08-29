@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='optimize_query',
+    name='optim_query',
     version='0.0.1',
     description='Fine-tune BERT for vectorized query search',
-    url='https://github.com/afurkank/optimize_query',
+    url='https://github.com/afurkank/optim_query',
     author='Ahmet Furkan Karacık',
     author_email='furkan.karacikq@gmail.com',
     license='MIT',
