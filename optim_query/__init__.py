@@ -1,4 +1,4 @@
-from optimize_query import (
+from optim_query.optimize_query import (
     FineTune,
     CreateDatabase,
     Inference
