@@ -1,1 +1,8 @@
-from optim_query import FineTune, CreateDatabase, Inference
+import os
+
+files = os.listdir(__path__[0])
+modules = (
+    x.replace(".py", "") for x in files if x.endswith(".py") and not x.startswith("__")
+)
+for module in modules:
+    __import__("optim_query." + module)

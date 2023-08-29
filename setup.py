@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='optim_query',
-    version='0.0.6',
+    version='0.0.7',
     description='Fine-tune BERT for vectorized query search',
     url='https://github.com/afurkank/optim_query',
     author='Ahmet Furkan Karacık',

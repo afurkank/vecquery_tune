@@ -1,6 +1,6 @@
-from .fine_tune import main as fine_tune_main
-from .inference import main as inference_main
-from .create_database import main as create_database_main
+from optim_query.fine_tune import main as fine_tune_main
+from optim_query.inference import main as inference_main
+from optim_query.create_database import main as create_database_main
 
 # class to run fine-tuning
 class FineTune:
