@@ -8,6 +8,10 @@ The structure of the custom embedding model is simply adding another linear laye
 
 # How to Use
 
+Important: I'm having some problems with publishing this as a package, so you can just download the source code
+and use the script 'vecquery_tune' under the folder 'vecquery_tune' as it is. I will release this 
+as a package as soon as possible.
+
 First, install the package via pip:
 
 `pip install vecquery_tune`
