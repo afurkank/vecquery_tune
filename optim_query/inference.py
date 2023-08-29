@@ -1,7 +1,7 @@
 import torch
 import chromadb
 
-from model import CustomBERTModel, Tokenize
+from .model import CustomBERTModel, Tokenize
 
 def get_model_tokenizer(model_name, max_len):
     """
