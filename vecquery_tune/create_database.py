@@ -10,6 +10,9 @@ def get_model_tokenizer(model_name, max_len):
     Function to get model and tokenizer
     """
     model = CustomBERTModel(model_name)
+    # check if max_len is valid
+    if max_len > model.bert.config.hidden_size:
+        raise Exception(f"max_len must be less than or equal to {model.bert.config.hidden_size}")
     tokenizer = Tokenize(model_name, max_len)
     return model, tokenizer
 
