@@ -1,5 +1,5 @@
-__version__ = "0.4"
+__version__ = "0.4.0"
 
 # Path: __init__.py
 
-from vecquery_tune import FineTune, CreateDatabase, Inference
+from vecquerytune import FineTune, CreateDatabase, Inference
