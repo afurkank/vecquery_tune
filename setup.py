@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='vecquerytune',
-    version='0.0.4',
+    name='optimize_query',
+    version='0.0.5',
     description='Fine-tune BERT for vectorized query search',
-    url='https://github.com/afurkank/vecquerytune',
+    url='https://github.com/afurkank/optimize_query',
     author='Ahmet Furkan Karacık',
     author_email='furkan.karacikq@gmail.com',
     license='MIT',
