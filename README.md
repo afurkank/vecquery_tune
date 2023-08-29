@@ -35,6 +35,16 @@ fine_tune(
 )
 ```
 
+'data.json' file must be of the format:
+```
+[
+    {
+        'input': 'query input',
+        'output': 'the desired output of the query'
+    },
+]
+```
+
 To see the improved results, you need to first create a database and add your data to it.
 This package utilizes ChromaDB to run inference and see the results. Before using the 
 'Inference' class, you need to use 'CreateDatabase' class and create a database.
