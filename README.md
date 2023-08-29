@@ -12,14 +12,6 @@ Important: I'm having some problems with publishing this as a package, so you ca
 and use the script 'vecquery_tune' under the folder 'vecquery_tune' as it is. I will release this 
 as a package as soon as possible.
 
-First, install the package via pip:
-
-`pip install vecquery_tune`
-
-Then, you can use the 'FineTune' class to define a method with which you can 
-fine-tune a BERT model of your choice to better optimize the results of query 
-searches on vector databases.
-
 Here is an example usage:
 
 ```
