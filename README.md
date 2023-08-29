@@ -97,7 +97,7 @@ inference(
 ```
 
 Note: The parameter 'max_len' is 256 by default. However, if the max len exceeds the size 
-of the last hidden dimension of your chosen BERT model, it will give an error. I recommend 
+of the last hidden state of your chosen BERT model, it will give an error. I recommend 
 specifying a max_len of 768 at most if you want specify a value.
 
 # What's Next
