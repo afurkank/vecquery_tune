@@ -96,10 +96,6 @@ inference(
 )
 ```
 
-Note: The parameter 'max_len' is 256 by default. However, if the max len exceeds the size 
-of the last hidden state of your chosen BERT model, it will give an error. I recommend 
-specifying a max_len of 768 at most if you want specify a value.
-
 # What's Next
 - Add JSON formatted data option for creating the database and running inference.
 - Add flexibility regarding the JSON formatted data keys when fine-tuning.
