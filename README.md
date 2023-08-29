@@ -64,7 +64,7 @@ create_database = CreateDatabase(
 )
 
 create_database(
-    metadata_column='time,author', # delimeter must be ';' or ','
+    metadata_column='time,author', # seperate metadata columns by either ';' or ','
     documents_column='docs',
     max_len=256 # this isn't required, however, the max len is usually 768 for BERT models,
     # and if the input tokens exceed this, there may be an error
