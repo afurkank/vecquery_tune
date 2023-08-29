@@ -2,8 +2,8 @@ import torch
 import chromadb
 import csv
 
-from utils.custom_embedding import CustomEmbeddingModel
-from utils.model import CustomBERTModel, Tokenize
+from custom_embedding import CustomEmbeddingModel
+from model import CustomBERTModel, Tokenize
 
 def get_model_tokenizer(model_name, max_len):
     """
