@@ -12,8 +12,9 @@ First, install the package via pip:
 
 `pip install vecquery_tune`
 
-Then, you can use the 'FineTune' package to fine-tune a BERT model of your choice to 
-better optimize the results of query searches on vector databases.
+Then, you can use the 'FineTune' class to define a method with which you can 
+fine-tune a BERT model of your choice to better optimize the results of query 
+searches on vector databases.
 
 Here is an example usage:
 
@@ -45,7 +46,7 @@ fine_tune(
 ]
 ```
 
-To see the improved results, you need to first create a database and add your data to it.
+To see the improved results, you need to first create a database and add your data into it.
 This package utilizes ChromaDB to run inference and see the results. Before using the 
 'Inference' class, you need to use 'CreateDatabase' class and create a database.
 
@@ -66,8 +67,7 @@ create_database = CreateDatabase(
 create_database(
     metadata_column='time,author', # seperate metadata columns by either ';' or ','
     documents_column='docs',
-    max_len=256 # this isn't required, however, the max len is usually 768 for BERT models,
-    # and if the input tokens exceed this, there may be an error
+    max_len=256
 )
 ```
 
@@ -92,10 +92,13 @@ inference = Inference(
 inference(
     metadata_column='author',
     documents_column='docs',
-    max_len=256 # this isn't required, however, the max len is usually 768 for BERT models,
-    # and if the input tokens exceed this, there may be an error
+    max_len=256
 )
 ```
+
+Note: The parameter 'max_len' is 256 by default. However, if the max len exceeds the size 
+of the last hidden dimension of your chosen BERT model, it will give an error. I recommend 
+specifying a max_len of 768 at most if you want specify a value.
 
 # What's Next
 - Add JSON formatted data option for creating the database and running inference.
