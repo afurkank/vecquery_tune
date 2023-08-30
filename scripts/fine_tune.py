@@ -10,7 +10,7 @@ from utils.model import CustomBERTModel, Tokenize
 
 # define parser
 parser = ArgumentParser()
-parser.add_argument('--model_name', type=str, default='dmdbz/bert-base-turkish-cased', required=True,
+parser.add_argument('--model_name', type=str, default='bert-base-uncased', required=True,
                     help='The name of the model to use')
 parser.add_argument('data_path', type=str, required=True,
                     help='The path to the JSON file containing the data')
@@ -46,6 +46,10 @@ a corpus in the language you are fine-tuning for.
 '''
 model = CustomBERTModel(MODEL_NAME)
 tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
+
+# check if max_len is valid
+if MAX_LEN > model.bert.config.hidden_size:
+    raise Exception(f"max_len must be less than or equal to {model.bert.config.hidden_size}")
 
 # load data
 with open(DATA_PATH, 'r', encoding='utf-8') as file:

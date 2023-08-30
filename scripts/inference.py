@@ -6,9 +6,9 @@ from utils.model import CustomBERTModel, Tokenize
 
 # define parser
 parser = argparse.ArgumentParser()
-parser.add_argument('--model_name', type=str, default='dbmdz/bert-base-turkish-cased', required=True,
+parser.add_argument('--model_name', type=str, default='bert-base-uncased', required=True,
                     help='The name of the model to use')
-parser.add_argument('--model_weights_path', type=str, default='./', required=True,
+parser.add_argument('--model_weights_path', type=str, default='./model.pt', required=True,
                     help='The path to the model weights file')
 parser.add_argument('--documents_column', type=str, required=True,
                     help='The name of the column in the CSV file that contains the documents')
@@ -34,6 +34,10 @@ MAX_LEN = args.max_len
 # define model
 model = CustomBERTModel(MODEL_NAME)
 tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
+
+# check if max_len is valid
+if MAX_LEN > model.bert.config.hidden_size:
+    raise Exception(f"max_len must be less than or equal to {model.bert.config.hidden_size}")
 
 # load model weights
 model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH))

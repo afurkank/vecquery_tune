@@ -1,5 +1,5 @@
 torchrun fine_tune.py \
-    --model_name dbmdz/bert-base-turkish-cased \
+    --model_name bert-base-uncased \
     --data_path data.json \
     --path_to_save_model ./ \
     --epochs 20 \
