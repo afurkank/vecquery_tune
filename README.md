@@ -1,12 +1,45 @@
 # Vector Query Optimizer
 
-This project aims to use any pre-trained BERT model from the HuggingFace library 'transformers' as a custom embedding function. It is useful when your query results are sometimes not related to your input.
+## What it Does
 
-To see the improved results, it utilizes the open-source vector database ChromaDB.
+This project aims to optimize the vector query results of ChromaDB when the custom embedding function is a pre-trained BERT model from the HuggingFace library 'transformers'. 
+
+It is useful when your query results are sometimes not related to your input.
+
+To see the improved results, this project also allows you to run inference easily.
+
+## How it Works
 
 The structure of the custom embedding model is simply adding another linear layer on top of the base BERT model of your choice, and freezing the original BERT model's parameters before fine-tuning the weights of the linear layer. By doing this, it preserves the original knowledge of the BERT model, thus only improving the search results without causing 'forgetting'.
 
 # How to Use
+
+## Scripts
+
+You can download the source code and run the scripts.
+
+You can either run the bash scripts which are named like this: `run_script.sh` 
+
+or 
+
+Directly use `torchrun` command through terminal within the vecquery_tune/scripts directory. 
+
+Here is an example usage:
+
+```
+torchrun fine_tune.py \
+    --model_name bert-base-uncased \
+    --data_path data.json \
+    --path_to_save_model ./ \
+    --epochs 20 \
+    --batch_size 32 \
+    --max_len 256 \
+    --lr 2e-5
+```
+
+Note: Running scripts is significantly faster than using the 'vecquery_tune' package.
+
+## Package
 
 First, install the package via pip:
 
@@ -99,6 +132,8 @@ inference(
 # What's Next
 - Add JSON formatted data option for creating the database and running inference.
 - Add flexibility regarding the JSON formatted data keys when fine-tuning.
+- Add GPU support
+- Optimize speed of package usage
 
 # Issues with Installing ChromaDB
 
