@@ -8,14 +8,18 @@ The structure of the custom embedding model is simply adding another linear laye
 
 # How to Use
 
-Important: I'm having some problems with publishing this as a package, so you can just download the source code
-and use the script 'vecquery_tune' under the folder 'vecquery_tune' as it is. I will release this 
-as a package as soon as possible.
+First, install the package via pip:
+
+`pip install vecquery_tune`
+
+Then, you can use the 'FineTune' class to define a method with which you can 
+fine-tune a BERT model of your choice to better optimize the results of query 
+searches on vector databases.
 
 Here is an example usage:
 
 ```
-from vecquery_tune import FineTune
+from vecquery_tune.vecquery_tune import FineTune
 
 # fine tune model
 fine_tune = FineTune(
@@ -49,7 +53,7 @@ This package utilizes ChromaDB to run inference and see the results. Before usin
 Here is how you can use the 'CreateDatabase' class:
 
 ```
-from vecquery_tune import CreateDatabase
+from vecquery_tune.vecquery_tune import CreateDatabase
 
 # create database
 create_database = CreateDatabase(
@@ -74,7 +78,7 @@ default ones, you need to supply them here as well.
 Here is how you can use the 'Inference' class:
 
 ```
-from vecquery_tune import Inference
+from vecquery_tune.vecquery_tune import Inference
 
 # inference
 inference = Inference(
