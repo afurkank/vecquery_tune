@@ -13,3 +13,9 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+
+#json files
+*.json
+
+#csv files
+*.csv

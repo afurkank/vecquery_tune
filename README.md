@@ -37,8 +37,6 @@ torchrun fine_tune.py \
     --lr 2e-5
 ```
 
-Note: Running scripts is significantly faster than using the 'vecquery_tune' package.
-
 ## Package
 
 First, install the package via pip:

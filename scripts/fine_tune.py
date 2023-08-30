@@ -10,9 +10,9 @@ from utils.model import CustomBERTModel, Tokenize
 
 # define parser
 parser = ArgumentParser()
-parser.add_argument('--model_name', type=str, default='bert-base-uncased', required=True,
+parser.add_argument('--model_name', type=str, required=True,
                     help='The name of the model to use')
-parser.add_argument('data_path', type=str, required=True,
+parser.add_argument('--data_path', type=str, required=True,
                     help='The path to the JSON file containing the data')
 parser.add_argument('--path_to_save_model', type=str, default='./', required=False,
                     help='The path to save the trained model')
@@ -35,15 +35,7 @@ BATCH_SIZE = args.batch_size
 MAX_LEN = args.max_len
 LR = args.lr
 
-# define model
-'''
-The model must be one of huggingface's pretrained models.
-You can find the models here:
-https://huggingface.co/models
-
-Make sure that the model you specify was trained on 
-a corpus in the language you are fine-tuning for.
-'''
+# define model and tokenizer
 model = CustomBERTModel(MODEL_NAME)
 tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
 
@@ -61,7 +53,7 @@ for item in data:
         print('The data is not in the correct format')
         exit()
 
-# function to create iterable dataset from data
+# class to create iterable dataset from data
 class CustomDataset(Dataset):
     def __init__(self, data, tokenizer):
         self.data = data
@@ -95,11 +87,13 @@ for param in model.bert.parameters():
 for epoch in range(EPOCH):
     for batch in data_loader:
         # get embeddings
-        emb1, mask1 = model(batch['input_ids'], batch['attention_mask'])
-        emb2, mask2 = model(batch['correct_result_input_ids'], batch['correct_result_attention_mask'])
+        emb1 = model(batch['input_ids'], batch['attention_mask'])
+        emb2 = model(batch['correct_result_input_ids'], batch['correct_result_attention_mask'])
+        # emb1 = (batch_size x embed_dim)
+        # emb2 = (batch_size x embed_dim)
 
         # calculate loss
-        loss = loss_func(emb1, emb2, mask1, mask2)
+        loss = loss_func(emb1, emb2)
 
         # backpropagate loss
         loss.backward()
@@ -113,3 +107,4 @@ for epoch in range(EPOCH):
 
 # save model
 torch.save(model.state_dict(), PATH_TO_SAVE_MODEL + 'model.pt')
+print('Model saved to', PATH_TO_SAVE_MODEL + 'model.pt')
