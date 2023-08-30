@@ -67,7 +67,7 @@ def get_data_from_columns(data, column_names, documents_column, metadata_columns
     metadata = []
     documents_column_index = column_names.index(documents_column)
     for i, row in enumerate(data):
-        ids.append(i)
+        ids.append(str(i))
         documents.append(row[documents_column_index])
         metadata_dict = {}
         for column_name in metadata_columns:
