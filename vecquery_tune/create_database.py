@@ -2,8 +2,8 @@ import torch
 import chromadb
 import csv
 
-from optim_query.custom_embedding import CustomEmbeddingModel
-from optim_query.model import CustomBERTModel, Tokenize
+from vecquery_tune.custom_embedding import CustomEmbeddingModel
+from vecquery_tune.model import CustomBERTModel, Tokenize
 
 def get_model_tokenizer(model_name, max_len):
     """

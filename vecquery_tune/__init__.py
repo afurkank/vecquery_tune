@@ -1,4 +1,4 @@
-from optim_query.optimize_query import (
+from vecquery_tune.vecquery_tune import (
     FineTune,
     CreateDatabase,
     Inference

@@ -4,8 +4,8 @@ import torch
 from torch.optim import Adam
 from torch.utils.data import DataLoader, Dataset
 # import custom modules
-from optim_query.loss_funcs import CosineDistanceLoss
-from optim_query.model import CustomBERTModel, Tokenize
+from vecquery_tune.loss_funcs import CosineDistanceLoss
+from vecquery_tune.model import CustomBERTModel, Tokenize
 
 def get_model_tokenizer(model_name, max_len):
     """
