@@ -2,11 +2,11 @@
 
 ## What it Does
 
-This project aims to optimize the vector query results of ChromaDB when the custom embedding function is a pre-trained BERT model from the HuggingFace library 'transformers'. 
+This project aims to optimize the vector query results when you are using a custom embedding function to obtain vector embeddings from your documents. The custom embedding function can be any pre-trained BERT model from the HuggingFace library 'transformers'. 
 
-It is useful when your query results are sometimes not related to your input.
+This is useful when your query results are sometimes not related to your input.
 
-To see the improved results, this project also allows you to run inference easily.
+To see the improved results, this project also allows you to run inference easily, utilizing the open-source vector database ChromaDB.
 
 ## How it Works
 
