@@ -1,4 +1,4 @@
-torchrun create_database.py \
+python create_database.py \
     --model_name bert-base-uncased \
     --model_weights_path model.pt \
     --data_path data.csv \

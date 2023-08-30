@@ -1,4 +1,4 @@
-torchrun inference.py \
+python inference.py \
     --model_name bert-base-uncased \
     --model_weights_path model.pt \
     --documents_column documents \

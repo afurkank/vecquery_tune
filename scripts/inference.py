@@ -6,7 +6,7 @@ from utils.model import CustomBERTModel, Tokenize
 
 # define parser
 parser = argparse.ArgumentParser()
-parser.add_argument('--model_name', type=str, default='bert-base-uncased', required=True,
+parser.add_argument('--model_name', type=str, required=True,
                     help='The name of the model to use')
 parser.add_argument('--model_weights_path', type=str, default='./model.pt', required=True,
                     help='The path to the model weights file')
