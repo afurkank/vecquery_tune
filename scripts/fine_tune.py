@@ -35,6 +35,10 @@ BATCH_SIZE = args.batch_size
 MAX_LEN = args.max_len
 LR = args.lr
 
+# get device
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('Device:', device)
+
 # define model and tokenizer
 model = CustomBERTModel(MODEL_NAME)
 tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
@@ -42,6 +46,9 @@ tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
 # check if max_len is valid
 if MAX_LEN > model.bert.config.hidden_size:
     raise Exception(f"max_len must be less than or equal to {model.bert.config.hidden_size}")
+
+# move model to device
+model.to(device)
 
 # load data
 with open(DATA_PATH, 'r', encoding='utf-8') as file:
@@ -63,6 +70,12 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         inputs = self.tokenizer(self.data[idx]['input'])
         correct_answer = self.tokenizer(self.data[idx]['output'])
+        # put data on device
+        for key in inputs:
+            inputs[key] = inputs[key].to(device)
+        for key in correct_answer:
+            correct_answer[key] = correct_answer[key].to(device)
+        # return a dictionary of tensors
         return {
             'input_ids': inputs['input_ids'].squeeze(0),
             'attention_mask': inputs['attention_mask'].squeeze(0),
@@ -84,6 +97,7 @@ for param in model.bert.parameters():
     param.requires_grad = False
 
 # train model
+print('Training model...')
 for epoch in range(EPOCH):
     for batch in data_loader:
         # get embeddings

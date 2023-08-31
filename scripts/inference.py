@@ -31,6 +31,10 @@ COLLECTION_NAME = args.collection_name
 NUM_RESULTS = args.num_results
 MAX_LEN = args.max_len
 
+# get device
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('Device:', device)
+
 # define model
 model = CustomBERTModel(MODEL_NAME)
 tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
@@ -39,8 +43,11 @@ tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
 if MAX_LEN > model.bert.config.hidden_size:
     raise Exception(f"max_len must be less than or equal to {model.bert.config.hidden_size}")
 
+# move model to device
+model.to(device)
+
 # load model weights
-model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH))
+model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH, map_location=device))
 
 # get client
 client = chromadb.PersistentClient(path="./")
@@ -66,10 +73,18 @@ while True:
         break
     input_ids = tokenizer(user_input)['input_ids']
     attention_mask = tokenizer(user_input)['attention_mask']
-    user_embedding = model(input_ids, attention_mask).detach()[0].numpy().tolist()
-
+    # put data on device
+    input_ids = input_ids.to(device)
+    attention_mask = attention_mask.to(device)
+    # get embeddings
+    user_embedding = model(input_ids, attention_mask)
+    # put embeddings on cpu
+    user_embedding = user_embedding.cpu()
+    # convert embedding tensor to list
+    user_embedding = user_embedding.detach()[0].numpy().tolist()
+    # get results
     result_dict = existing_collection.query(user_embedding, n_results=NUM_RESULTS)
-
+    
     metadatas = result_dict['metadatas']
     documents = result_dict['documents']
     for i in range(NUM_RESULTS):

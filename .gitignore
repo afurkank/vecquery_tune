@@ -19,3 +19,15 @@ var/
 
 #csv files
 *.csv
+
+# weight files
+*.pt
+
+# pytorch files
+*.pth
+
+# chroma files
+*.sqlite3
+
+# cache files
+__pycache__/

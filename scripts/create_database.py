@@ -33,6 +33,10 @@ METADATA_COLUMNS = args.metadata_columns
 COLLECTION_NAME = args.collection_name
 MAX_LEN = args.max_len
 
+# get device
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('Device:', device)
+
 # define model
 model = CustomBERTModel(MODEL_NAME)
 tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
@@ -40,6 +44,9 @@ tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
 # check if max_len is valid
 if MAX_LEN > model.bert.config.hidden_size:
     raise Exception(f"max_len must be less than or equal to {model.bert.config.hidden_size}")
+
+# move model to device
+model.to(device)
 
 # load model weights
 model.load_state_dict(torch.load(MODEL_WEIGHTS_PATH))
@@ -86,7 +93,7 @@ for row in data:
     metadata.append(metadata_dict)
 
 # create embedding function
-embedding_function = CustomEmbeddingModel(model, tokenizer)
+embedding_function = CustomEmbeddingModel(model, tokenizer, device)
 
 # create database
 print("\nCreating database...\n")
