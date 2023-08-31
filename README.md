@@ -129,9 +129,7 @@ inference(
 
 # What's Next
 - Add JSON formatted data option for creating the database and running inference.
-- Add flexibility regarding the JSON formatted data keys when fine-tuning.
-- Add GPU support
-- Optimize speed of package usage
+- Add GPU support **Done**
 
 # Issues with Installing ChromaDB
 
