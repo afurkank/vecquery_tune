@@ -104,4 +104,4 @@ def main(model_name,
     # get collection
     collection = get_collection(client, collection_name)
     # get embeddings from user input
-    get_embeddings_from_user_input(model, tokenizer, collection, num_results, metadata_columns, documents_column)
+    get_embeddings_from_user_input(model, tokenizer, collection, num_results, metadata_columns, documents_column, device)
