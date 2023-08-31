@@ -23,7 +23,7 @@ def load_model(model, model_weights_path):
     model.load_state_dict(torch.load(model_weights_path))
     return model
 
-def get_data_and_delimiter(data_path):
+def get_data(data_path):
     """
     Function to get data from CSV file
     """
@@ -32,16 +32,16 @@ def get_data_and_delimiter(data_path):
         csv_reader = csv.reader(csv_file)
         for row in csv_reader:
             break
-        delimiter = ';' if ';' in row[0] else ','
+        delimeter = ';' if ';' in row[0] else ','
     
     # read CSV data
     datalist = []
     with open(data_path, 'r', encoding='utf-8') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=delimiter)
+        csv_reader = csv.reader(csv_file, delimiter=delimeter)
         for row in csv_reader:
             datalist.append(row)
 
-    return datalist, delimiter
+    return datalist
 
 def get_column_names(data):
     """
@@ -92,11 +92,11 @@ def get_client(path):
     client = chromadb.PersistentClient(path=path)
     return client
 
-def get_embedding_function(model, tokenizer):
+def get_embedding_function(model, tokenizer, device):
     """
     Function to get embedding function
     """
-    embedding_function = CustomEmbeddingModel(model, tokenizer)
+    embedding_function = CustomEmbeddingModel(model, tokenizer, device)
     return embedding_function
 
 def create_database(client, collection_name, embedding_function):
@@ -146,8 +146,13 @@ def main(model_name,
     model, tokenizer = get_model_tokenizer(model_name, max_len)
     # load model
     model = load_model(model, model_weights_path)
+    # get device
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print('Device:', device)
+    # move model to device
+    model.to(device)
     # get data
-    data, delimiter = get_data_and_delimiter(data_path)
+    data = get_data(data_path)
     # get column names
     column_names = get_column_names(data)
     # get metadata column names
@@ -159,7 +164,7 @@ def main(model_name,
     # get client
     client = get_client(client_path)
     # get embedding function
-    embedding_function = get_embedding_function(model, tokenizer)
+    embedding_function = get_embedding_function(model, tokenizer, device)
     # create database
     collection = create_database(client, collection_name, embedding_function)
     # add data to collection

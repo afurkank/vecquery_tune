@@ -47,7 +47,7 @@ def get_collection(client, collection_name):
         exit()
     return existing_collection
 
-def get_embeddings_from_user_input(model, tokenizer, collection, num_results, metadata_columns, documents_column):
+def get_embeddings_from_user_input(model, tokenizer, collection, num_results, metadata_columns, documents_column, device):
     """
     Function to get embeddings from user input
     """
@@ -58,8 +58,16 @@ def get_embeddings_from_user_input(model, tokenizer, collection, num_results, me
             break
         input_ids = tokenizer(user_input)['input_ids']
         attention_mask = tokenizer(user_input)['attention_mask']
-        user_embedding = model(input_ids, attention_mask).detach()[0].numpy().tolist()
-
+        # put data on device
+        input_ids = input_ids.to(device)
+        attention_mask = attention_mask.to(device)
+        # get embeddings
+        user_embedding = model(input_ids, attention_mask)
+        # put embeddings on cpu
+        user_embedding = user_embedding.cpu()
+        # convert to list
+        user_embedding = user_embedding.detach()[0].numpy().tolist()
+        # get results
         result_dict = collection.query(user_embedding, n_results=num_results)
 
         metadatas = result_dict['metadatas']
@@ -85,6 +93,10 @@ def main(model_name,
     """
     # get model and tokenizer
     model, tokenizer = get_model_tokenizer(model_name, max_len)
+    # get device
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # move model to device
+    model.to(device)
     # load model weights
     model = load_model(model, model_weights_path)
     # get client

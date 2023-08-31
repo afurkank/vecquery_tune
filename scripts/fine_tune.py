@@ -100,6 +100,9 @@ for param in model.bert.parameters():
 print('Training model...')
 for epoch in range(EPOCH):
     for batch in data_loader:
+        # put data on device
+        for key in batch:
+            batch[key] = batch[key].to(device)
         # get embeddings
         emb1 = model(batch['input_ids'], batch['attention_mask'])
         emb2 = model(batch['correct_result_input_ids'], batch['correct_result_attention_mask'])

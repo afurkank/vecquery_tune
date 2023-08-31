@@ -55,7 +55,7 @@ def get_data_loader(data, tokenizer, batch_size):
     dataset = CustomDataset(data, tokenizer)
     return DataLoader(dataset, batch_size=batch_size)
 
-def train(model, data_loader, loss_func, optimizer, epochs):
+def train(model, data_loader, loss_func, optimizer, epochs, device):
     """
     Function to train model
     """
@@ -65,6 +65,9 @@ def train(model, data_loader, loss_func, optimizer, epochs):
     # train model
     for epoch in range(epochs):
         for batch in data_loader:
+            # put data on device
+            for key in batch:
+                batch[key] = batch[key].to(device)
             # get embeddings
             emb1 = model(batch['input_ids'], batch['attention_mask'])
             emb2 = model(batch['correct_result_input_ids'], batch['correct_result_attention_mask'])
@@ -90,6 +93,11 @@ def main(model_name, data_path, path_to_save_model, epochs, batch_size, max_len,
     """
     # get model and tokenizer
     model, tokenizer = get_model_tokenizer(model_name, max_len)
+    # get device
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print('Device:', device)
+    # move model to device
+    model.to(device)
     # get data
     data = get_data(data_path)
     # create data loader
@@ -99,7 +107,7 @@ def main(model_name, data_path, path_to_save_model, epochs, batch_size, max_len,
     # define optimizer
     optimizer = Adam(model.parameters(), lr=lr)
     # train model
-    train(model, data_loader, loss_func, optimizer, epochs)
+    train(model, data_loader, loss_func, optimizer, epochs, device)
     # save model
     torch.save(model.state_dict(), path_to_save_model + 'model.pt')
     print(f'Model saved to {path_to_save_model}model.pt')
