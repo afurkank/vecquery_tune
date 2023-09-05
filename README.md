@@ -1,5 +1,6 @@
 # Vector Query Optimizer
 
+
 ## What it Does
 
 This project aims to optimize the vector query results when you are using a custom embedding function to obtain vector embeddings from your documents. The custom embedding function can be any pre-trained BERT model from the HuggingFace library 'transformers'. 
@@ -12,7 +13,11 @@ To see the improved results, this project also allows you to run inference easil
 
 The structure of the custom embedding model is simply adding another linear layer on top of the base BERT model of your choice, and freezing the original BERT model's parameters before fine-tuning the weights of the linear layer. By doing this, it preserves the original knowledge of the BERT model, thus only improving the search results without causing 'forgetting'.
 
+Note: Even though 'forgetting' is prevented, I would still suggest you use a big dataset that covers most of the vector embeddings in your database if not all as there may still be a loss of previous knowledge.
+
+
 # How to Use
+
 
 ## Scripts
 
@@ -36,6 +41,7 @@ torchrun fine_tune.py \
     --max_len 256 \
     --lr 2e-5
 ```
+
 
 ## Package
 
@@ -127,9 +133,10 @@ inference(
 )
 ```
 
+
 # What's Next
 - Add JSON formatted data option for creating the database and running inference.
-- Add GPU support **Done**
+- Add GPU support - **Done**
 
 # Issues with Installing ChromaDB
 
