@@ -7,8 +7,10 @@ from torch.utils.data import DataLoader, Dataset
 # import custom modules
 from utils.loss_funcs import CosineDistanceLoss
 from utils.model import CustomBERTModel, Tokenize
+from peft import LoraConfig, get_peft_model, TaskType
+from transformers import TrainingArguments, Trainer
 
-# define parser
+""" # define parser
 parser = ArgumentParser()
 parser.add_argument('--model_name', type=str, required=True,
                     help='The name of the model to use')
@@ -27,40 +29,31 @@ parser.add_argument('--lr', type=float, default=0.00002, required=False,
 args = parser.parse_args()
 
 # define constants
-MODEL_NAME = args.model_name
-DATA_PATH = args.data_path
-PATH_TO_SAVE_MODEL = args.path_to_save_model
-EPOCH = args.epochs
-BATCH_SIZE = args.batch_size
-MAX_LEN = args.max_len
-LR = args.lr
+model_name = args.model_name
+data_path = args.data_path
+path_to_save_model = args.path_to_save_model
+epoch = args.epochs
+b_size = args.batch_size
+max_len = args.max_len
+lr = args.lr """
 
-# get device
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print('Device:', device)
+# define constants
+model_name = "dbmdz/bert-base-turkish-uncased"
+data_path = "scripts\data.json"
+path_to_save_model = "./"
+epoch = 5
+b_size = 2
+max_len = 256
+lr = 1e-3
 
 # define model and tokenizer
-model = CustomBERTModel(MODEL_NAME)
-tokenizer = Tokenize(MODEL_NAME, MAX_LEN)
+model = CustomBERTModel(model_name)
+tokenizer = Tokenize(model_name, max_len)
 
 # check if max_len is valid
-if MAX_LEN > model.bert.config.hidden_size:
+if max_len > model.bert.config.hidden_size:
     raise Exception(f"max_len must be less than or equal to {model.bert.config.hidden_size}")
 
-# move model to device
-model.to(device)
-
-# load data
-with open(DATA_PATH, 'r', encoding='utf-8') as file:
-    data = json.load(file)
-
-# check if data is in the correct format
-for item in data:
-    if 'input' not in item or 'output' not in item:
-        print('The data is not in the correct format')
-        exit()
-
-# class to create iterable dataset from data
 class CustomDataset(Dataset):
     def __init__(self, data, tokenizer):
         self.data = data
@@ -70,42 +63,48 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         inputs = self.tokenizer(self.data[idx]['input'])
         correct_answer = self.tokenizer(self.data[idx]['output'])
-        # put data on device
-        for key in inputs:
-            inputs[key] = inputs[key].to(device)
-        for key in correct_answer:
-            correct_answer[key] = correct_answer[key].to(device)
-        # return a dictionary of tensors
         return {
             'input_ids': inputs['input_ids'].squeeze(0),
             'attention_mask': inputs['attention_mask'].squeeze(0),
             'correct_result_input_ids': correct_answer['input_ids'].squeeze(0),
             'correct_result_attention_mask': correct_answer['attention_mask'].squeeze(0)
         }
-
-# create dataset and data loader
+    
+# load data
+with open(data_path, 'r', encoding='utf-8') as file:
+    data = json.load(file)
+# check if data is in the correct format
+for item in data:
+    if 'input' not in item or 'output' not in item:
+        print('The data is not in the correct format')
+        exit()
 dataset = CustomDataset(data, tokenizer)
-data_loader = DataLoader(dataset, batch_size=BATCH_SIZE)
+data_loader = DataLoader(dataset, batch_size=b_size)
 
-# function to calculate loss with cosine distance
+lora_config = LoraConfig(
+    r=8,
+    lora_alpha=8,
+    target_modules=["query", "value"],
+    lora_dropout=0.05,
+    bias="none",
+)
+
+peft_model = get_peft_model(
+    model=model,
+    peft_config=lora_config,
+)
+
 loss_func = CosineDistanceLoss()
-# define optimizer
-optimizer = Adam(model.parameters(), lr=LR)
+optimizer = Adam(peft_model.parameters(), lr=lr)
 
-# freeze the model's parameters except for the linear layer
-for param in model.bert.parameters():
-    param.requires_grad = False
-
-# train model
-print('Training model...')
-for epoch in range(EPOCH):
+for epoch in range(epoch):
     for batch in data_loader:
         # put data on device
         for key in batch:
-            batch[key] = batch[key].to(device)
+            batch[key] = batch[key]
         # get embeddings
-        emb1 = model(batch['input_ids'], batch['attention_mask'])
-        emb2 = model(batch['correct_result_input_ids'], batch['correct_result_attention_mask'])
+        emb1 = peft_model(batch['input_ids'], batch['attention_mask'])
+        emb2 = peft_model(batch['correct_result_input_ids'], batch['correct_result_attention_mask'])
         # emb1 = (batch_size x embed_dim)
         # emb2 = (batch_size x embed_dim)
 
@@ -120,8 +119,6 @@ for epoch in range(EPOCH):
 
         # zero gradients
         optimizer.zero_grad()
-    print(f'Epoch {epoch+1}/{EPOCH}, Loss: {loss.item()}')
+    print(f'Epoch {epoch+1}/{epoch}, Loss: {loss.item()}')
 
-# save model
-torch.save(model.state_dict(), PATH_TO_SAVE_MODEL + 'model.pt')
-print('Model saved to', PATH_TO_SAVE_MODEL + 'model.pt')
+peft_model.save_pretrained("./")
