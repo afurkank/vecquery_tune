@@ -1,21 +1,16 @@
 # Vector Query Optimizer
 
 
-## What it Does
+## How it works and what it does:
 
-This project aims to optimize the vector query results when you are using a custom embedding function to obtain vector embeddings from your documents. The custom embedding function can be any pre-trained BERT model from the HuggingFace library 'transformers'. 
+This project aims to allow easy fine-tuning and improvement of BERT models that are used as embedding models utilizing a Parameter Efficient Fine-Tuning(PEFT) method Low-Rank Adaptation(LoRA).
 
-This is useful when your query results are sometimes not related to your input.
+Fine-tuning and improvement of embedding models are needed when you are querying over vector databases and the results are not what you expect. Using LoRA results in efficient fine-tuning while also preventing catastrophic forgetting.
 
-To see the improved results, this project also allows you to run inference easily, utilizing the open-source vector database ChromaDB.
+To see the improved results, this project also lets you run inference easily, utilizing the open-source vector database ChromaDB.
 
-## How it Works
-
-The structure of the custom embedding model is simply adding another linear layer on top of the base BERT model of your choice, and freezing the original BERT model's parameters before fine-tuning the weights of the linear layer. By doing this, it preserves the original knowledge of the BERT model, thus only improving the search results without causing 'forgetting'.
-
-Note: Even though 'forgetting' is prevented, I would still suggest you use a big dataset that covers most of the vector embeddings in your database if not all as there may still be a loss of previous knowledge.
-
-
+If you have a GPU, running scripts or using the package will automatically use it so you don't have to worry about it.
+***
 # How to Use
 
 
@@ -29,14 +24,14 @@ or
 
 Directly use `torchrun` command through terminal within the vecquery_tune/scripts directory. 
 
-Here is an example usage:
+Here is an example usage for running the `fine_tune.py` script:
 
 ```
 torchrun fine_tune.py \
     --model_name bert-base-uncased \
     --data_path data.json \
-    --path_to_save_model ./ \
-    --epochs 20 \
+    --path_to_peft_folder ./ \
+    --epochs 5 \
     --batch_size 32 \
     --max_len 256 \
     --lr 2e-5
@@ -50,23 +45,22 @@ First, install the package via pip:
 `pip install vecquery_tune`
 
 Then, you can use the 'FineTune' class to define a method with which you can 
-fine-tune a BERT model of your choice to better optimize the results of query 
-searches on vector databases.
+fine-tune a BERT model.
 
 Here is an example usage:
 
 ```
-from vecquery_tune.vecquery_tune import FineTune
+from vecquery_tune import FineTune
 
 # fine tune model
 fine_tune = FineTune(
     data_path='data.json',
     model_name='bert-base-uncased',
-    path_to_save_model='./'
+    path_to_save_peft_folder='./'
 )
 
 fine_tune(
-    epochs=20,
+    epochs=5,
     batch_size=32,
     max_len=256,
     lr=2e-5
@@ -96,7 +90,7 @@ from vecquery_tune.vecquery_tune import CreateDatabase
 create_database = CreateDatabase(
     data_path='data.csv',
     model_name='bert-base-uncased',
-    model_weights_path='./model.pt',
+    peft_folder_path='./peft_model',
     collection_name='collection',
     client_path='./'
 )
@@ -119,7 +113,7 @@ from vecquery_tune.vecquery_tune import Inference
 
 # inference
 inference = Inference(
-    model_weights_path='./model.pt',
+    peft_folder_path='./peft_folder',
     model_name='bert-base-uncased',
     collection_name='collection',
     client_path='./',
@@ -132,11 +126,6 @@ inference(
     max_len=256
 )
 ```
-
-
-# What's Next
-- Add JSON formatted data option for creating the database and running inference.
-- Add GPU support - **Done**
 
 # Issues with Installing ChromaDB
 
