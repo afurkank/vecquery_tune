@@ -86,5 +86,5 @@ def main(model_name, data_path, path_to_save_peft_folder, epochs, batch_size, ma
     loss_func = CosineDistanceLoss()
     optimizer = Adam(peft_model.parameters(), lr=lr)
     train(peft_model, data_loader, loss_func, optimizer, epochs, device)
-    peft_model.save_pretrained(path_to_save_peft_folder+'peft_folder')
+    peft_model.save_pretrained(path_to_save_peft_folder+'peft_model')
     print(f'Peft model adapters saved to {path_to_save_peft_folder} as peft_folder')
