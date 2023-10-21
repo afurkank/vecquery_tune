@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='vecquery_tune',
+    name='BERTune-Chroma',
     version='0.1',
     description='Fine-tune BERT for vectorized query search',
     url='https://github.com/afurkank/optim_query',
