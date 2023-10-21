@@ -30,7 +30,7 @@ Here is an example usage for running the `fine_tune.py` script:
 torchrun fine_tune.py \
     --model_name bert-base-uncased \
     --data_path data.json \
-    --path_to_peft_folder ./ \
+    --path_to_save_peft_folder ./ \
     --epochs 5 \
     --batch_size 32 \
     --max_len 256 \
