@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='BERTune-Chroma',
+    name='BERTune',
     version='0.0.1',
     description='Fine-tune BERT for vectorized query search',
-    url='https://github.com/afurkank/BERTune-Chroma',
+    url='https://github.com/afurkank/BERTune',
     author='Ahmet Furkan Karacık',
     author_email='furkan.karacikq@gmail.com',
     license='MIT',
