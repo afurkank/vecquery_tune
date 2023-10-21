@@ -1,6 +1,6 @@
-from vecquery_tune.fine_tune import main as fine_tune_main
-from vecquery_tune.inference import main as inference_main
-from vecquery_tune.create_database import main as create_database_main
+from fine_tune import main as fine_tune_main
+from inference import main as inference_main
+from create_database import main as create_database_main
 
 # class to run fine-tuning
 class FineTune:
@@ -14,10 +14,10 @@ class FineTune:
     def __init__(self,
                     data_path:str,
                     model_name:str='bert-base-uncased',
-                    path_to_save_model:str='./') -> None:
+                    path_to_save_peft_folder:str='./') -> None:
         self.model_name = model_name
         self.data_path = data_path
-        self.path_to_save_model = path_to_save_model
+        self.path_to_save_peft_folder = path_to_save_peft_folder
 
     def __call__(self, epochs:int=20, batch_size:int=32, max_len:int=256, lr:float=2e-5):
         '''
@@ -29,7 +29,7 @@ class FineTune:
         fine_tune_main(
             model_name=self.model_name,
             data_path=self.data_path,
-            path_to_save_model=self.path_to_save_model,
+            path_to_save_peft_folder=self.path_to_save_peft_folder,
             epochs=epochs,
             batch_size=batch_size,
             max_len=max_len,
@@ -49,11 +49,11 @@ class CreateDatabase:
     '''
     def __init__(self,
                     data_path:str,
-                    model_weights_path:str,
+                    peft_folder_path:str,
                     model_name:str='bert-base-uncased',
                     collection_name:str='collection',
                     client_path:str='./') -> None:
-        self.model_weights_path = model_weights_path
+        self.peft_folder_path = peft_folder_path
         self.data_path = data_path
         self.model_name = model_name
         self.collection_name = collection_name
@@ -67,7 +67,7 @@ class CreateDatabase:
         '''
         create_database_main(
             model_name=self.model_name,
-            model_weights_path=self.model_weights_path,
+            peft_folder_path=self.peft_folder_path,
             data_path=self.data_path,
             collection_name=self.collection_name,
             metadata_columns=metadata_column,
@@ -87,13 +87,13 @@ class Inference:
     num_results: number of results to return (returns top k results)
     '''
     def __init__(self,
-                model_weights_path:str,
+                peft_folder_path:str,
                 model_name:str='bert-base-uncased',
                 collection_name:str='collection',
                 client_path:str='./',
                 num_results:int=5) -> None:
         self.model_name = model_name
-        self.model_weights_path = model_weights_path
+        self.peft_folder_path = peft_folder_path
         self.collection_name = collection_name
         self.client_path = client_path
         self.num_results = num_results
@@ -107,7 +107,7 @@ class Inference:
         '''
         inference_main(
             model_name=self.model_name,
-            model_weights_path=self.model_weights_path,
+            peft_folder_path=self.peft_folder_path,
             collection_name=self.collection_name,
             client_path=self.client_path,
             num_results=self.num_results,

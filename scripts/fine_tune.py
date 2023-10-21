@@ -1,22 +1,20 @@
 # import libraries
 import json
-import torch
 from argparse import ArgumentParser
 from torch.optim import Adam
 from torch.utils.data import DataLoader, Dataset
 # import custom modules
 from utils.loss_funcs import CosineDistanceLoss
 from utils.model import CustomBERTModel, Tokenize
-from peft import LoraConfig, get_peft_model, TaskType
-from transformers import TrainingArguments, Trainer
+from peft import LoraConfig, get_peft_model
 
-""" # define parser
+# define parser
 parser = ArgumentParser()
 parser.add_argument('--model_name', type=str, required=True,
                     help='The name of the model to use')
 parser.add_argument('--data_path', type=str, required=True,
                     help='The path to the JSON file containing the data')
-parser.add_argument('--path_to_save_model', type=str, default='./', required=False,
+parser.add_argument('--path_to_save_peft_folder', type=str, default='./', required=False,
                     help='The path to save the trained model')
 parser.add_argument('--epochs', type=int, default=20, required=False,
                     help='The number of epochs to train for')
@@ -31,20 +29,11 @@ args = parser.parse_args()
 # define constants
 model_name = args.model_name
 data_path = args.data_path
-path_to_save_model = args.path_to_save_model
+path_to_save_peft_folder = args.path_to_save_peft_folder
 epoch = args.epochs
 b_size = args.batch_size
 max_len = args.max_len
-lr = args.lr """
-
-# define constants
-model_name = "dbmdz/bert-base-turkish-uncased"
-data_path = "scripts\data.json"
-path_to_save_model = "./"
-epoch = 5
-b_size = 2
-max_len = 256
-lr = 1e-3
+lr = args.lr
 
 # define model and tokenizer
 model = CustomBERTModel(model_name)
@@ -63,13 +52,14 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         inputs = self.tokenizer(self.data[idx]['input'])
         correct_answer = self.tokenizer(self.data[idx]['output'])
-        return {
+        result_dict = {
             'input_ids': inputs['input_ids'].squeeze(0),
             'attention_mask': inputs['attention_mask'].squeeze(0),
             'correct_result_input_ids': correct_answer['input_ids'].squeeze(0),
             'correct_result_attention_mask': correct_answer['attention_mask'].squeeze(0)
         }
-    
+        return result_dict
+
 # load data
 with open(data_path, 'r', encoding='utf-8') as file:
     data = json.load(file)
@@ -121,4 +111,4 @@ for epoch in range(epoch):
         optimizer.zero_grad()
     print(f'Epoch {epoch+1}/{epoch}, Loss: {loss.item()}')
 
-peft_model.save_pretrained("./")
+peft_model.save_pretrained(path_to_save_peft_folder)
