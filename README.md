@@ -113,7 +113,7 @@ from vecquery_tune.vecquery_tune import Inference
 
 # inference
 inference = Inference(
-    peft_folder_path='./peft_folder',
+    peft_folder_path='./peft_model',
     model_name='bert-base-uncased',
     collection_name='collection',
     client_path='./',
