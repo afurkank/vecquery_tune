@@ -123,6 +123,8 @@ def main(model_name,
 
     column_names = get_column_names(data)
 
+    data = data[1:]
+
     metadata_column_names = get_metadata_column_names(metadata_columns)
     # check if metadata column names and documents column name are in column names
     check_column_parameters(column_names, documents_column, metadata_column_names)
