@@ -80,6 +80,7 @@ def main(model_name, data_path, path_to_save_peft_folder, epochs, batch_size, ma
         model=model,
         peft_config=lora_config,
     )
+    peft_model = peft_model.to(device)
     data = get_data(data_path)
     data_loader = get_data_loader(data, tokenizer, batch_size)
     loss_func = CosineDistanceLoss()
