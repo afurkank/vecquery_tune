@@ -1,7 +1,7 @@
 import torch
 import chromadb
 from peft import PeftModel
-from model import CustomBERTModel, Tokenize
+from vecquery_tune.model import CustomBERTModel, Tokenize
 
 def get_model_and_tokenizer(model_name, max_len):
     model = CustomBERTModel(model_name)

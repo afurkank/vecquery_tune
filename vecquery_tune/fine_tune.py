@@ -5,8 +5,8 @@ from torch.optim import Adam
 from torch.utils.data import DataLoader, Dataset
 from peft import LoraConfig, get_peft_model
 # import custom modules
-from loss_funcs import CosineDistanceLoss
-from model import CustomBERTModel, Tokenize
+from vecquery_tune.loss_funcs import CosineDistanceLoss
+from vecquery_tune.model import CustomBERTModel, Tokenize
 
 def get_model_and_tokenizer(model_name, max_len):
     model = CustomBERTModel(model_name)

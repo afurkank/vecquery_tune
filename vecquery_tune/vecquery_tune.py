@@ -1,6 +1,6 @@
-from fine_tune import main as fine_tune_main
-from inference import main as inference_main
-from create_database import main as create_database_main
+from vecquery_tune.fine_tune import main as fine_tune_main
+from vecquery_tune.inference import main as inference_main
+from vecquery_tune.create_database import main as create_database_main
 
 # class to run fine-tuning
 class FineTune:
