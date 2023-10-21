@@ -4,7 +4,7 @@ setup(
     name='BERTune-Chroma',
     version='0.0.1',
     description='Fine-tune BERT for vectorized query search',
-    url='https://github.com/afurkank/optim_query',
+    url='https://github.com/afurkank/BERTune-Chroma',
     author='Ahmet Furkan Karacık',
     author_email='furkan.karacikq@gmail.com',
     license='MIT',
