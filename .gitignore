@@ -1,5 +1,4 @@
 # Distribution / packaging
-
 bin/
 build/
 develop-eggs/
@@ -10,6 +9,7 @@ lib64/
 parts/
 sdist/
 var/
+runs/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -22,6 +22,12 @@ var/
 
 # weight files
 *.pt
+
+# peft adapters
+*.bin
+
+# peft folder
+peft_model/
 
 # pytorch files
 *.pth
