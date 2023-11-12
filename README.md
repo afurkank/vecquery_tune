@@ -3,13 +3,13 @@
 
 ## How it works and what it does:
 
-This project aims to allow easy fine-tuning and improvement of BERT models that are used as embedding models utilizing a Parameter Efficient Fine-Tuning(PEFT) method Low-Rank Adaptation(LoRA).
+This project aims to allow easy fine-tuning and improvement of BERT models that are used as embedding models utilizing Low-Rank Adaptation(LoRA).
 
 Fine-tuning and improvement of embedding models are needed when you are querying over vector databases and the results are not what you expect. Using LoRA results in efficient fine-tuning while also preventing catastrophic forgetting.
 
-To see the improved results, this project also lets you run inference easily, utilizing the open-source vector database ChromaDB.
+To see the improved results, you can create a collection with ChromaDB, an open-source vector database, and query over it.
 
-If you have a GPU, running scripts or using the package will automatically use it so you don't have to worry about it.
+If you have a GPU, both the scripts and the package will automatically default to GPU.
 ***
 # How to Use
 
@@ -50,20 +50,20 @@ fine-tune a BERT model.
 Here is an example usage:
 
 ```
-from vecquery_tune import FineTune
+from vecquery_tune.vecquery_tune import FineTune
 
 # fine tune model
 fine_tune = FineTune(
-    data_path='data.json',
-    model_name='bert-base-uncased',
-    path_to_save_peft_folder='./'
+    data_path = 'data.json',
+    model_name = 'bert-base-uncased',
+    path_to_save_peft_folder = './'
 )
 
 fine_tune(
-    epochs=5,
-    batch_size=32,
-    max_len=256,
-    lr=2e-5
+    epochs = 5,
+    batch_size = 32,
+    max_len = 256,
+    lr = 2e-5
 )
 ```
 
@@ -77,28 +77,28 @@ fine_tune(
 ]
 ```
 
-To see the improved results, you need to first create a database and add your data into it.
-This package utilizes ChromaDB to run inference and see the results. Before using the 
-'Inference' class, you need to use 'CreateDatabase' class and create a database.
+To see the improved results, you need to first create a collection and add your data to it.
+This package utilizes ChromaDB for inference. Before using the 
+'Inference' class, you need to create a collection.
 
-Here is how you can use the 'CreateDatabase' class:
+Here is how you can create a collection using the 'CreateDatabase' class:
 
 ```
 from vecquery_tune.vecquery_tune import CreateDatabase
 
 # create database
 create_database = CreateDatabase(
-    data_path='data.csv',
-    model_name='bert-base-uncased',
-    peft_folder_path='./peft_model',
-    collection_name='collection',
-    client_path='./'
+    data_path = 'data.csv',
+    model_name = 'bert-base-uncased',
+    peft_folder_path = './peft_model',
+    collection_name = 'collection',
+    client_path = './'
 )
 
 create_database(
-    metadata_column='time,author', # seperate metadata columns by either ';' or ','
-    documents_column='docs',
-    max_len=256
+    metadata_column = 'time,author', # seperate metadata columns by either ';' or ','
+    documents_column = 'docs',
+    max_len = 256
 )
 ```
 
@@ -113,17 +113,17 @@ from vecquery_tune.vecquery_tune import Inference
 
 # inference
 inference = Inference(
-    peft_folder_path='./peft_model',
-    model_name='bert-base-uncased',
-    collection_name='collection',
-    client_path='./',
-    num_results=5
+    peft_folder_path = './peft_model',
+    model_name = 'bert-base-uncased',
+    collection_name = 'collection',
+    client_path = './',
+    num_results = 5
 )
 
 inference(
-    metadata_column='author',
-    documents_column='docs',
-    max_len=256
+    metadata_column = 'author',
+    documents_column = 'docs',
+    max_len = 256
 )
 ```
 
